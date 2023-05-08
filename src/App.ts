@@ -67,7 +67,7 @@ export class App {
         SwaggerModule.setup('/api/docs', this.application, document);
     }
 
-    async listen(): Promise<void> {
+    listen(): void {
         this.application
             .listen(this.serverPort, '0.0.0.0')
             .then(async () => {
