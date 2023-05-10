@@ -26,7 +26,7 @@ export class UserService {
         });
         if (!createdUser) {
             throw new ConflictException(
-                `User with email: ${data.email} already exist`,
+                `User with that email: ${data.email} already exist`,
             );
         }
         const userInstance = await createdUser.save();

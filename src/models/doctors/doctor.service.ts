@@ -27,7 +27,7 @@ export class DoctorService {
         });
         if (!createdDoctor) {
             throw new ConflictException(
-                `Doctor with email: ${data.email} already exist`,
+                `Doctor with that email: ${data.email} already exist`,
             );
         }
         const doctorInstance = await createdDoctor.save();

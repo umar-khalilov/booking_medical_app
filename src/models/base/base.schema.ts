@@ -21,7 +21,7 @@ export class Base {
     })
     @Prop({
         type: SchemaTypes.UUID,
-        default: () => randomUUID(),
+        default: randomUUID(),
         required: true,
     })
     @Transform(({ value }) => value.toString())
