@@ -58,7 +58,6 @@ export class App {
                 'https://umar-khalilov.github.io',
                 'ERMASTER100@gmail.com',
             )
-            .addBearerAuth()
             .build();
         const document = SwaggerModule.createDocument(
             this.application,

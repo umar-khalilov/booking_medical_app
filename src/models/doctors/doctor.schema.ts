@@ -1,34 +1,36 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument, Types } from 'mongoose';
+import { Type } from 'class-transformer';
+import { Base } from '../base/base.schema';
+import { Appointment } from '../appointments/appointment.schema';
+import { Specializes } from '@/common/enums/specializes.enum';
+import { Schema } from '@/common/decorators/schema.decorator';
 
-@Schema()
-export class Doctor {
-    @Prop({ unique: true })
-    readonly email: string;
+@Schema({
+    inheritOptions: true,
+})
+export class Doctor extends Base {
+    @ApiProperty({
+        example: Specializes.THERAPIST,
+        enum: Specializes,
+        description: 'List of specializes',
+    })
+    @Prop({ type: String, enum: Specializes, required: true })
+    readonly spec: Specializes;
 
-    @Prop()
-    readonly reg_token: string;
-
-    @Prop()
-    readonly photo_avatar: string;
-
-    @Prop()
-    readonly phone: string;
-
-    @Prop()
-    readonly name: string;
-
-    @Prop()
-    readonly type: 'doc';
-
-    @Prop()
-    readonly spec: 'therapist';
-
-    @Prop()
+    @ApiProperty({
+        example: false,
+        description: 'The doctor is free or not',
+    })
+    @Prop({ type: Boolean, required: false, default: false })
     readonly free: boolean;
 
-    @Prop()
-    readonly appointments_accepted: [];
+    @Prop({
+        type: [{ type: Types.ObjectId, ref: 'Appointment' }],
+    })
+    @Type(() => Appointment)
+    readonly appointments_accepted: Appointment[];
 }
 
 export type DoctorDocument = HydratedDocument<Doctor>;

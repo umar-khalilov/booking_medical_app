@@ -26,35 +26,9 @@ export class EnvironmentVariables {
     @IsNotEmpty({ message: 'SERVER_PORT cannot be an empty value' })
     readonly SERVER_PORT: number;
 
-    @Min(0, { message: 'DEBUG_PORT cannot be less than zero' })
-    @Max(65535, { message: 'DEBUG_PORT cannot be more than 65535' })
-    @IsInt({ message: 'DEBUG_PORT must be an integer value' })
-    @Type(() => Number)
-    @IsNotEmpty({ message: 'DEBUG_PORT cannot be an empty value' })
-    readonly DEBUG_PORT: number;
-
-    @IsString({ message: 'DB_HOST must be a string value' })
-    @IsNotEmpty({ message: 'DB_HOST cannot be an empty value' })
-    readonly DB_HOST: string;
-
-    @Min(0, { message: 'DB_PORT cannot be less than zero' })
-    @Max(65535, { message: 'DB_PORT cannot be more than 65535' })
-    @IsInt({ message: 'DB_PORT must be an integer value' })
-    @Type(() => Number)
-    @IsNotEmpty({ message: 'DB_PORT cannot be an empty value' })
-    readonly DB_PORT: number;
-
-    @IsString({ message: 'DB_USER must be a string value' })
-    @IsNotEmpty({ message: 'DB_USER cannot be an empty value' })
-    readonly DB_USER: string;
-
-    @IsString({ message: 'DB_NAME must be a string value' })
-    @IsNotEmpty({ message: 'DB_NAME cannot be an empty value' })
-    readonly DB_NAME: string;
-
-    @IsString({ message: 'DB_PASSWORD must be a string value' })
-    @IsNotEmpty({ message: 'DB_PASSWORD cannot be an empty value' })
-    readonly DB_PASSWORD: string;
+    @IsString({ message: 'MONGO_DB_URI must be a string value' })
+    @IsNotEmpty({ message: 'MONGO_DB_URI cannot be an empty value' })
+    readonly MONGO_DB_URI: string;
 
     @IsString({ message: 'JWT_ACCESS_TOKEN_SECRET must be a string value' })
     @IsNotEmpty({ message: 'JWT_ACCESS_TOKEN_SECRET cannot be an empty value' })

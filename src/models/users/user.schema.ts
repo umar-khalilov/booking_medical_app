@@ -1,25 +1,19 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument, Types } from 'mongoose';
+import { Type } from 'class-transformer';
+import { Base } from '../base/base.schema';
+import { Appointment } from '../appointments/appointment.schema';
+import { Schema } from '@/common/decorators/schema.decorator';
 
-@Schema()
-export class User {
-    @Prop({ type: String, required: true, unique: true })
-    readonly email: string;
-
-    @Prop({ type: String, required: true, name: 'reg_token' })
-    readonly regToken: string;
-
-    @Prop({ type: String, required: false, name: 'photo_avatar' })
-    readonly photo_avatar: string;
-
-    @Prop({ type: String, required: true })
-    readonly phone: string;
-
-    @Prop({ type: String, required: true })
-    readonly name: string;
-
-    @Prop()
-    readonly type: 'user';
+@Schema({
+    inheritOptions: true,
+})
+export class User extends Base {
+    @Prop({
+        type: [{ type: Types.ObjectId, ref: 'Appointment' }],
+    })
+    @Type(() => Appointment)
+    readonly appointments: Appointment[];
 }
 
 export type UserDocument = HydratedDocument<User>;
