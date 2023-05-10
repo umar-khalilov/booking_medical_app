@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { Type } from 'class-transformer';
@@ -11,18 +10,9 @@ import { Schema } from '@/common/decorators/schema.decorator';
     inheritOptions: true,
 })
 export class Doctor extends Base {
-    @ApiProperty({
-        example: Specializes.THERAPIST,
-        enum: Specializes,
-        description: 'List of specializes',
-    })
     @Prop({ type: String, enum: Specializes, required: true })
     readonly spec: Specializes;
 
-    @ApiProperty({
-        example: false,
-        description: 'The doctor is free or not',
-    })
     @Prop({ type: Boolean, required: false, default: false })
     readonly free: boolean;
 

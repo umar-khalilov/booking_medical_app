@@ -14,7 +14,7 @@ import { Roles } from '@/common/enums/roles.enum';
 export class BaseDto {
     @ApiProperty({
         example: 'Sincere@april.biz',
-        description: 'The email of doctor',
+        description: 'The email address',
         format: 'email',
         required: true,
     })
@@ -51,7 +51,7 @@ export class BaseDto {
 
     @ApiProperty({
         example: 'Leanne Graham',
-        description: 'The name of user',
+        description: 'The name',
         required: true,
     })
     @Length(3, 450, {
@@ -60,13 +60,4 @@ export class BaseDto {
     @IsString({ message: 'name must be a string value' })
     @IsNotEmpty({ message: 'name cannot be an empty value' })
     readonly name: string;
-
-    @ApiProperty({
-        example: Roles.DOCTOR,
-        enum: Roles,
-        description: 'Role type',
-    })
-    @IsEnum(Roles, { message: 'type must be an enum value' })
-    @IsNotEmpty({ message: 'type cannot be an empty value' })
-    readonly type: Roles;
 }

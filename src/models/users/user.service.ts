@@ -9,6 +9,7 @@ import { User, UserDocument } from './user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Roles } from '@/common/enums/roles.enum';
 
 @Injectable()
 export class UserService {
@@ -18,10 +19,12 @@ export class UserService {
     ) {}
 
     async createOne(data: CreateUserDto): Promise<UserDto> {
-        const payload = { email: data.email, type: data.type };
+        const type = Roles.USER;
+        const payload = { email: data.email, type };
         const regToken = await this.jwtService.signAsync(payload);
         const createdUser = new this.userModel({
             ...data,
+            type,
             reg_token: regToken,
         });
         if (!createdUser) {

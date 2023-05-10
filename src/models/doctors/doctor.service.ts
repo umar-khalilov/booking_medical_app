@@ -9,6 +9,7 @@ import { Doctor, DoctorDocument } from './doctor.schema';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { JwtService } from '@nestjs/jwt';
 import { DoctorDto } from './dto/doctor.dto';
+import { Roles } from '@/common/enums/roles.enum';
 
 @Injectable()
 export class DoctorService {
@@ -19,10 +20,12 @@ export class DoctorService {
     ) {}
 
     async createOne(data: CreateDoctorDto): Promise<DoctorDto> {
-        const payload = { email: data.email, type: data.type };
+        const type = Roles.DOCTOR;
+        const payload = { email: data.email, type };
         const regToken = await this.jwtService.signAsync(payload);
         const createdDoctor = new this.doctorModel({
             ...data,
+            type,
             reg_token: regToken,
         });
         if (!createdDoctor) {
