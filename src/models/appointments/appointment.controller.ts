@@ -60,10 +60,8 @@ export class AppointmentController {
         description: 'Appointment with that id not found',
     })
     @Get('/rejection')
-    async rejectAppointment(
-        @Query() { appointmentId }: RejectionDto,
-    ): Promise<void> {
-        await this.appointmentService.rejectAppointment(appointmentId);
+    async rejectAppointment(@Query() appointment: RejectionDto): Promise<void> {
+        await this.appointmentService.rejectAppointment(appointment);
     }
 
     @ApiOperation({ summary: 'Get an appointment' })

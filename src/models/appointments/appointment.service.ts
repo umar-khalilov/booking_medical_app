@@ -11,6 +11,7 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { AppointmentDto } from './dto/appointment.dto';
 import { IAppointmentLinks } from '@/common/interfaces/appointment-links.interface';
 import { ConfirmationDto } from './dto/confirmation.dto';
+import { RejectionDto } from './dto/rejection.dto';
 
 @Injectable()
 export class AppointmentService {
@@ -98,7 +99,7 @@ export class AppointmentService {
         await user.save();
     }
 
-    async rejectAppointment(appointmentId: string): Promise<void> {
+    async rejectAppointment({ appointmentId }: RejectionDto): Promise<void> {
         await this.removeOne(appointmentId);
     }
 
