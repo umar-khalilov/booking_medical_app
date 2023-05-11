@@ -1,10 +1,12 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     HttpCode,
     HttpStatus,
     Param,
+    Patch,
     Post,
 } from '@nestjs/common';
 import {
@@ -18,6 +20,8 @@ import {
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { DoctorDto } from './dto/doctor.dto';
+import { ParamWithIdDto } from '../base/param-with-id.dto';
+import { UpdateDoctorDto } from './dto/update-doctor.dto';
 
 @ApiTags('Doctors')
 @Controller('/doctors')
@@ -56,5 +60,28 @@ export class DoctorController {
         id: string,
     ): Promise<DoctorDto> {
         return this.doctorService.findOne(id);
+    }
+
+    @ApiOperation({ summary: 'Update a doctor' })
+    @ApiNotFoundResponse({ description: 'Doctor with that id not found' })
+    @HttpCode(HttpStatus.ACCEPTED)
+    @Patch('/:id')
+    async updateOne(
+        @Param()
+        { id }: ParamWithIdDto,
+        @Body() data: UpdateDoctorDto,
+    ): Promise<DoctorDto> {
+        return this.doctorService.updateOne(id, data);
+    }
+
+    @ApiOperation({ summary: 'Delete a doctor' })
+    @ApiNotFoundResponse({ description: 'Doctor with that id not found' })
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Delete('/:id')
+    async removeOne(
+        @Param()
+        { id }: ParamWithIdDto,
+    ): Promise<void> {
+        await this.doctorService.removeOne(id);
     }
 }

@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
-import { validateEnv } from './app/validateEnv';
-import { DatabaseModule } from './app/database/database.module';
-import { UserModule } from './models/users/user.module';
-import { DoctorModule } from './models/doctors/doctor.module';
-import { AppointmentModule } from './models/appointments/appointment.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { DatabaseModule } from './database/database.module';
+import { MailModule } from '@/common/mail/mail.module';
+import { UserModule } from '../models/users/user.module';
+import { DoctorModule } from '../models/doctors/doctor.module';
+import { AppointmentModule } from '../models/appointments/appointment.module';
+import { validateEnv } from './validateEnv';
 
 @Module({
     imports: [
@@ -32,6 +34,8 @@ import { AppointmentModule } from './models/appointments/appointment.module';
                 },
             }),
         }),
+        MailModule,
+        ScheduleModule.forRoot(),
         UserModule,
         DoctorModule,
         AppointmentModule,

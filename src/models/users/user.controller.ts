@@ -1,10 +1,12 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     HttpCode,
     HttpStatus,
     Param,
+    Patch,
     Post,
 } from '@nestjs/common';
 import {
@@ -18,6 +20,8 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
+import { ParamWithIdDto } from '../base/param-with-id.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('Users')
 @Controller('/users')
@@ -56,5 +60,28 @@ export class UserController {
         id: string,
     ): Promise<UserDto> {
         return this.userService.findOne(id);
+    }
+
+    @ApiOperation({ summary: 'Update a user' })
+    @ApiNotFoundResponse({ description: 'User with that id not found' })
+    @HttpCode(HttpStatus.ACCEPTED)
+    @Patch('/:id')
+    async updateOne(
+        @Param()
+        { id }: ParamWithIdDto,
+        @Body() data: UpdateUserDto,
+    ): Promise<UserDto> {
+        return this.userService.updateOne(id, data);
+    }
+
+    @ApiOperation({ summary: 'Delete a user' })
+    @ApiNotFoundResponse({ description: 'User with that id not found' })
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Delete('/:id')
+    async removeOne(
+        @Param()
+        { id }: ParamWithIdDto,
+    ): Promise<void> {
+        await this.userService.removeOne(id);
     }
 }

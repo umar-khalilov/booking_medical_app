@@ -12,5 +12,6 @@ import { DoctorController } from './doctor.controller';
     ],
     providers: [DoctorService],
     controllers: [DoctorController],
+    exports: [DoctorService],
 })
 export class DoctorModule {}

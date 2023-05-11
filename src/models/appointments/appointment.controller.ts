@@ -6,6 +6,7 @@ import {
     HttpStatus,
     Param,
     Post,
+    Query,
 } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
@@ -17,6 +18,8 @@ import {
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { AppointmentDto } from './dto/appointment.dto';
+import { ConfirmationDto } from './dto/confirmation.dto';
+import { RejectionDto } from './dto/rejection.dto';
 
 @ApiTags('Appointments')
 @Controller('/appointments')
@@ -25,6 +28,9 @@ export class AppointmentController {
 
     @ApiOperation({ summary: 'Create an appointment' })
     @ApiBadRequestResponse({ description: 'Invalid data' })
+    @ApiNotFoundResponse({
+        description: 'Doctor or user with that id not found',
+    })
     @HttpCode(HttpStatus.CREATED)
     @Post('/')
     async create(@Body() data: CreateAppointmentDto): Promise<AppointmentDto> {
@@ -36,6 +42,28 @@ export class AppointmentController {
     @Get('/')
     async fetchAll(): Promise<AppointmentDto[]> {
         return this.appointmentService.fetchAll();
+    }
+
+    @ApiOperation({ summary: 'Confirm an appointment' })
+    @ApiNotFoundResponse({
+        description: 'Doctor, User or Appointment with that id not found',
+    })
+    @Get('/confirmation')
+    async confirmAppointment(
+        @Query() confirmationDto: ConfirmationDto,
+    ): Promise<void> {
+        await this.appointmentService.confirmAppointment(confirmationDto);
+    }
+
+    @ApiOperation({ summary: 'Reject an appointment' })
+    @ApiNotFoundResponse({
+        description: 'Appointment with that id not found',
+    })
+    @Get('/rejection')
+    async rejectAppointment(
+        @Query() { appointmentId }: RejectionDto,
+    ): Promise<void> {
+        await this.appointmentService.rejectAppointment(appointmentId);
     }
 
     @ApiOperation({ summary: 'Get an appointment' })

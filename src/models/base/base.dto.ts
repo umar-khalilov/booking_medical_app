@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
     IsEmail,
-    IsEnum,
     IsNotEmpty,
     IsOptional,
     IsString,
@@ -9,7 +8,6 @@ import {
     Length,
     MaxLength,
 } from 'class-validator';
-import { Roles } from '@/common/enums/roles.enum';
 
 export class BaseDto {
     @ApiProperty({

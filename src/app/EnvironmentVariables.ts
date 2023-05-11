@@ -41,4 +41,37 @@ export class EnvironmentVariables {
         message: 'JWT_ACCESS_TOKEN_EXPIRATION_TIME cannot be an empty value',
     })
     readonly JWT_ACCESS_TOKEN_EXPIRATION_TIME: string;
+
+    @IsString({
+        message: 'SMTP_HOST must be a string value',
+    })
+    @IsNotEmpty({
+        message: 'SMTP_HOST cannot be an empty value',
+    })
+    readonly SMTP_HOST: string;
+
+    @Min(0, { message: 'SMTP_PORT cannot be less than zero' })
+    @Max(65535, { message: 'SMTP_PORT cannot be more than 65535' })
+    @IsInt({ message: 'SMTP_PORT must be an integer value' })
+    @Type(() => Number)
+    @IsNotEmpty({
+        message: 'SMTP_PORT cannot be an empty value',
+    })
+    readonly SMTP_PORT: string;
+
+    @IsString({
+        message: 'SMTP_USERNAME must be a string value',
+    })
+    @IsNotEmpty({
+        message: 'SMTP_USERNAME cannot be an empty value',
+    })
+    readonly SMTP_USERNAME: string;
+
+    @IsString({
+        message: 'SMTP_PASSWORD must be a string value',
+    })
+    @IsNotEmpty({
+        message: 'SMTP_PASSWORD cannot be an empty value',
+    })
+    readonly SMTP_PASSWORD: string;
 }

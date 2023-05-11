@@ -3,13 +3,14 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
-import { JwtService } from '@nestjs/jwt';
 import { Roles } from '@/common/enums/roles.enum';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -41,15 +42,40 @@ export class UserService {
         if (!users.length) {
             throw new NotFoundException('No found users in database');
         }
-        const normalizedUsers = users.map(user => new UserDto(user));
-        return normalizedUsers;
+        return users.map(user => new UserDto(user));
     }
 
     async findOne(id: string): Promise<UserDto> {
         const user = await this.userModel.findById(id);
+
         if (!user) {
             throw new NotFoundException(`User with that id: ${id} not found`);
         }
         return new UserDto(user);
+    }
+
+    async findNativeUser(id: string): Promise<UserDocument> {
+        const user = await this.userModel.findById(id);
+        if (!user) {
+            throw new NotFoundException(`User with that id: ${id} not found`);
+        }
+        return user;
+    }
+
+    async updateOne(id: string, data: UpdateUserDto): Promise<UserDto> {
+        const user = await this.userModel.findByIdAndUpdate(id, data, {
+            new: true,
+        });
+        if (!user) {
+            throw new NotFoundException(`User with that id: ${id} not found`);
+        }
+        return new UserDto(user);
+    }
+
+    async removeOne(id: string): Promise<void> {
+        const removedUser = await this.userModel.findByIdAndDelete(id);
+        if (!removedUser) {
+            throw new NotFoundException(`User with that id: ${id} not found`);
+        }
     }
 }

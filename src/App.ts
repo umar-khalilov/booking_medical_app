@@ -1,13 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import {
     FastifyAdapter,
     NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import compression from '@fastify/compress';
-import { AppModule } from './app.module';
+import { AppModule } from './app/app.module';
 
 export class App {
     private readonly application: INestApplication;
@@ -51,7 +51,9 @@ export class App {
     private buildDocumentation(): void {
         const swaggerBaseConfigs = new DocumentBuilder()
             .setTitle('Medical booking service API')
-            .setDescription('This app show how you can reservate to doctor')
+            .setDescription(
+                'This application shows how you can make an appointment with a doctor',
+            )
             .setVersion('1.0.0')
             .setContact(
                 'Umar Khalilov',
