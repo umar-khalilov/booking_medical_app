@@ -9,7 +9,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
-import { Roles } from '@/common/enums/roles.enum';
+import { RoleTypes } from '@/common/enums/role-types.enum';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
@@ -20,13 +20,13 @@ export class UserService {
     ) {}
 
     async createOne(data: CreateUserDto): Promise<UserDto> {
-        const type = Roles.USER;
+        const type = RoleTypes.USER;
         const payload = { email: data.email, type };
         const regToken = await this.jwtService.signAsync(payload);
         const createdUser = new this.userModel({
             ...data,
             type,
-            reg_token: regToken,
+            regToken,
         });
         if (!createdUser) {
             throw new ConflictException(

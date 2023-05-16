@@ -11,7 +11,19 @@ import {
 
 export class BaseDto {
     @ApiProperty({
-        example: 'Sincere@april.biz',
+        example: 'Arnold Schwarzenegger',
+        description: 'The name',
+        required: true,
+    })
+    @Length(3, 450, {
+        message: 'name cannot be less 3 and more than 450 characters',
+    })
+    @IsString({ message: 'name must be a string value' })
+    @IsNotEmpty({ message: 'name cannot be an empty value' })
+    readonly name: string;
+
+    @ApiProperty({
+        example: 'arnold-classic@gmail.com',
         description: 'The email address',
         format: 'email',
         required: true,
@@ -30,10 +42,10 @@ export class BaseDto {
         description: 'The url address to photo picture',
         required: false,
     })
-    @IsUrl({}, { message: 'photo_avatar must be a valid url' })
-    @IsString({ message: 'photo_avatar must be a string value' })
+    @IsUrl({}, { message: 'photoAvatar must be a valid url' })
+    @IsString({ message: 'photoAvatar must be a string value' })
     @IsOptional()
-    readonly photo_avatar: string;
+    readonly photoAvatar: string;
 
     @ApiProperty({
         example: '+380952499948',
@@ -46,16 +58,4 @@ export class BaseDto {
     @IsString({ message: 'phone must be a string value' })
     @IsNotEmpty({ message: 'phone cannot be an empty value' })
     readonly phone: string;
-
-    @ApiProperty({
-        example: 'Leanne Graham',
-        description: 'The name',
-        required: true,
-    })
-    @Length(3, 450, {
-        message: 'name cannot be less 3 and more than 450 characters',
-    })
-    @IsString({ message: 'name must be a string value' })
-    @IsNotEmpty({ message: 'name cannot be an empty value' })
-    readonly name: string;
 }

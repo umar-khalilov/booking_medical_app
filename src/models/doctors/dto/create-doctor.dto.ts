@@ -11,5 +11,5 @@ export class CreateDoctorDto extends BaseDto {
     })
     @IsEnum(Specializes, { message: 'spec must be an enum value' })
     @IsNotEmpty({ message: 'spec cannot be an empty value' })
-    readonly spec: Specializes;
+    readonly specialization: Specializes;
 }

@@ -26,13 +26,13 @@ export class AppointmentService {
 
     async createOne(data: CreateAppointmentDto): Promise<AppointmentDto> {
         const [{ id: doctorId, email }, { id: userId }] = await Promise.all([
-            this.doctorService.findOne(data.doctor),
-            this.userService.findOne(data.user),
+            this.doctorService.findOne(data.doctorId),
+            this.userService.findOne(data.userId),
         ]);
         const isActive = this.isDateActive(data.date);
         const createdAppointment = new this.appointmentModel({
             ...data,
-            active: isActive,
+            isActive,
         });
         const appointmentInstance = await createdAppointment.save();
         const appointment = new AppointmentDto(appointmentInstance);
@@ -93,7 +93,7 @@ export class AppointmentService {
             this.userService.findNativeUser(userId),
             this.findNativeAppointment(appointmentId),
         ]);
-        doctor.appointments_accepted.push(appointment);
+        doctor.appointmentsAccepted.push(appointment);
         user.appointments.push(appointment);
         await doctor.save();
         await user.save();

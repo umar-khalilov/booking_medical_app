@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Doctor } from '../doctor.schema';
 import { Appointment } from '@/models/appointments/appointment.schema';
-import { Roles } from '@/common/enums/roles.enum';
+import { RoleTypes } from '@/common/enums/role-types.enum';
 import { Specializes } from '@/common/enums/specializes.enum';
 
 export class DoctorDto {
@@ -15,13 +15,19 @@ export class DoctorDto {
     public readonly id: string;
 
     @ApiProperty({
-        example: 'Sincere@april.biz',
+        example: 'Arnold Schwarzenegger',
+        description: 'The name of user',
+        required: true,
+    })
+    public readonly name: string;
+
+    @ApiProperty({
+        example: 'arnold-classic@gmail.com',
         description: 'The email of doctor',
         format: 'email',
         required: true,
     })
     public readonly email: string;
-    public readonly reg_token: string;
 
     @ApiProperty({
         example:
@@ -29,7 +35,7 @@ export class DoctorDto {
         description: 'The url address to photo picture',
         required: false,
     })
-    public readonly photo_avatar: string;
+    public readonly photoAvatar: string;
 
     @ApiProperty({
         example: '+380952499948',
@@ -39,43 +45,42 @@ export class DoctorDto {
     public readonly phone: string;
 
     @ApiProperty({
-        example: 'Leanne Graham',
-        description: 'The name of user',
-        required: true,
-    })
-    public readonly name: string;
-
-    @ApiProperty({
-        example: Roles.DOCTOR,
-        enum: Roles,
+        example: RoleTypes.DOCTOR,
+        enum: RoleTypes,
         description: 'Role type',
     })
-    public readonly type: Roles;
+    public readonly type: RoleTypes;
 
     @ApiProperty({
         example: Specializes.THERAPIST,
         enum: Specializes,
         description: 'List of specializes',
     })
-    public readonly spec: Specializes;
+    public readonly specialization: Specializes;
 
     @ApiProperty({
         example: false,
         description: 'The doctor is free or not',
     })
-    public readonly free: boolean;
-    public readonly appointments_accepted: Appointment[];
+    public readonly isFree: boolean;
+
+    @ApiProperty({
+        examples: [Appointment],
+        enum: Appointment,
+        enumName: Appointment.name,
+        description: 'Accepted appointments',
+    })
+    public readonly appointmentsAccepted: Appointment[];
 
     constructor(schema: Doctor) {
         this.id = schema._id;
-        this.email = schema.email;
-        this.reg_token = schema.reg_token;
-        this.photo_avatar = schema.photo_avatar;
-        this.phone = schema.phone;
         this.name = schema.name;
+        this.email = schema.email;
+        this.photoAvatar = schema.photoAvatar;
+        this.phone = schema.phone;
         this.type = schema.type;
-        this.spec = schema.spec;
-        this.free = schema.free;
-        this.appointments_accepted = schema.appointments_accepted;
+        this.specialization = schema.specialization;
+        this.isFree = schema.isFree;
+        this.appointmentsAccepted = schema.appointmentsAccepted;
     }
 }

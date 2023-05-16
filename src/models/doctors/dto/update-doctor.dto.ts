@@ -9,5 +9,5 @@ export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
     })
     @IsBoolean({ message: 'free must be a boolean value' })
     @IsNotEmpty({ message: 'free cannot be an empty value' })
-    readonly free: boolean;
+    readonly isFree: boolean;
 }

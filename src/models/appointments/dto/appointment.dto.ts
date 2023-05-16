@@ -46,6 +46,6 @@ export class AppointmentDto {
         this.date = schema.date;
         this.user = schema.user;
         this.doctor = schema.doctor;
-        this.active = schema.active;
+        this.active = schema.isActive;
     }
 }

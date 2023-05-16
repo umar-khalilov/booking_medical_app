@@ -1,26 +1,25 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { Type } from 'class-transformer';
-import { Base } from '../base/base.schema';
+import { BaseSchema } from '../base/base.schema';
 import { Appointment } from '../appointments/appointment.schema';
 import { Specializes } from '@/common/enums/specializes.enum';
-import { Schema } from '@/common/decorators/schema.decorator';
 
 @Schema({
-    inheritOptions: true,
+    versionKey: false,
 })
-export class Doctor extends Base {
+export class Doctor extends BaseSchema {
     @Prop({ type: String, enum: Specializes, required: true })
-    readonly spec: Specializes;
+    readonly specialization: Specializes;
 
     @Prop({ type: Boolean, required: false, default: false })
-    readonly free: boolean;
+    readonly isFree: boolean;
 
     @Prop({
-        type: [{ type: Types.ObjectId, ref: 'Appointment' }],
+        type: [{ type: Types.ObjectId, ref: Appointment.name }],
     })
     @Type(() => Appointment)
-    readonly appointments_accepted: Appointment[];
+    readonly appointmentsAccepted: Appointment[];
 }
 
 export type DoctorDocument = HydratedDocument<Doctor>;

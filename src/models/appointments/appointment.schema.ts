@@ -2,7 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, SchemaTypes, Types } from 'mongoose';
 import { Transform } from 'class-transformer';
 
-@Schema()
+@Schema({
+    versionKey: false,
+})
 export class Appointment {
     @Transform(({ value }) => value.toString())
     readonly _id: Types.ObjectId;
@@ -26,7 +28,7 @@ export class Appointment {
     readonly doctor: string;
 
     @Prop({ type: Boolean, required: true })
-    readonly active: boolean;
+    readonly isActive: boolean;
 }
 
 export type AppointmentDocument = HydratedDocument<Appointment>;

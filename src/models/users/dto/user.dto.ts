@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../user.schema';
 import { Appointment } from '@/models/appointments/appointment.schema';
-import { Roles } from '@/common/enums/roles.enum';
+import { RoleTypes } from '@/common/enums/role-types.enum';
 
 export class UserDto {
     @ApiProperty({
@@ -14,13 +14,19 @@ export class UserDto {
     public readonly id: string;
 
     @ApiProperty({
-        example: 'Sincere@april.biz',
+        example: 'Arnold Schwarzenegger',
+        description: 'The name of user',
+        required: true,
+    })
+    public readonly name: string;
+
+    @ApiProperty({
+        example: 'arnold-classic@gmail.com',
         description: 'The email of doctor',
         format: 'email',
         required: true,
     })
     public readonly email: string;
-    public readonly reg_token: string;
 
     @ApiProperty({
         example:
@@ -28,7 +34,7 @@ export class UserDto {
         description: 'The url address to photo picture',
         required: false,
     })
-    public readonly photo_avatar: string;
+    public readonly photoAvatar: string;
 
     @ApiProperty({
         example: '+380952499948',
@@ -38,28 +44,20 @@ export class UserDto {
     public readonly phone: string;
 
     @ApiProperty({
-        example: 'Leanne Graham',
-        description: 'The name of user',
-        required: true,
-    })
-    public readonly name: string;
-
-    @ApiProperty({
-        example: Roles.USER,
-        enum: Roles,
+        example: RoleTypes.USER,
+        enum: RoleTypes,
         description: 'Role type',
     })
-    public readonly type: Roles;
+    public readonly type: RoleTypes;
 
     readonly appointments: Appointment[];
 
     constructor(schema: User) {
         this.id = schema._id;
-        this.email = schema.email;
-        this.reg_token = schema.reg_token;
-        this.photo_avatar = schema.photo_avatar;
-        this.phone = schema.phone;
         this.name = schema.name;
+        this.email = schema.email;
+        this.photoAvatar = schema.photoAvatar;
+        this.phone = schema.phone;
         this.type = schema.type;
         this.appointments = schema.appointments;
     }

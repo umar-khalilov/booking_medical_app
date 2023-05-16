@@ -1,16 +1,15 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { Type } from 'class-transformer';
-import { Base } from '../base/base.schema';
+import { BaseSchema } from '../base/base.schema';
 import { Appointment } from '../appointments/appointment.schema';
-import { Schema } from '@/common/decorators/schema.decorator';
 
 @Schema({
-    inheritOptions: true,
+    versionKey: false,
 })
-export class User extends Base {
+export class User extends BaseSchema {
     @Prop({
-        type: [{ type: Types.ObjectId, ref: 'Appointment' }],
+        type: [{ type: Types.ObjectId, ref: Appointment.name }],
     })
     @Type(() => Appointment)
     readonly appointments: Appointment[];

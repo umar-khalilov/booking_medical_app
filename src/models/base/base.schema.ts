@@ -1,16 +1,10 @@
 import { randomUUID } from 'crypto';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, SchemaTypes } from 'mongoose';
+import { Prop } from '@nestjs/mongoose';
+import { SchemaTypes } from 'mongoose';
 import { Transform } from 'class-transformer';
-import { Schema } from '@/common/decorators/schema.decorator';
-import { Roles } from '@/common/enums/roles.enum';
+import { RoleTypes } from '@/common/enums/role-types.enum';
 
-@Schema({
-    toJSON: {
-        virtuals: true,
-    },
-})
-export class Base {
+export class BaseSchema {
     @Prop({
         type: SchemaTypes.UUID,
         default: randomUUID(),
@@ -23,10 +17,10 @@ export class Base {
     readonly email: string;
 
     @Prop({ type: String, required: true })
-    readonly reg_token: string;
+    readonly regToken: string;
 
-    @Prop({ type: String, required: false, name: 'photo_avatar' })
-    readonly photo_avatar: string;
+    @Prop({ type: String, required: false })
+    readonly photoAvatar: string;
 
     @Prop({ type: String, required: true })
     readonly phone: string;
@@ -34,13 +28,6 @@ export class Base {
     @Prop({ type: String, required: true })
     readonly name: string;
 
-    @Prop({ type: String, enum: Roles, required: true })
-    readonly type: Roles;
+    @Prop({ type: String, enum: RoleTypes, required: true })
+    readonly type: RoleTypes;
 }
-
-const BaseSchema = SchemaFactory.createForClass(Base);
-export type BaseDocument = HydratedDocument<Base>;
-BaseSchema.virtual('id').get(function (this: BaseDocument) {
-    return this._id;
-});
-export { BaseSchema };

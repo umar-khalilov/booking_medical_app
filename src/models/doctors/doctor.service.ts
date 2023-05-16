@@ -9,7 +9,7 @@ import { Model } from 'mongoose';
 import { Doctor, DoctorDocument } from './doctor.schema';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { DoctorDto } from './dto/doctor.dto';
-import { Roles } from '@/common/enums/roles.enum';
+import { RoleTypes } from '@/common/enums/role-types.enum';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 
 @Injectable()
@@ -21,13 +21,13 @@ export class DoctorService {
     ) {}
 
     async createOne(data: CreateDoctorDto): Promise<DoctorDto> {
-        const type = Roles.DOCTOR;
+        const type = RoleTypes.DOCTOR;
         const payload = { email: data.email, type };
         const regToken = await this.jwtService.signAsync(payload);
         const createdDoctor = new this.doctorModel({
             ...data,
             type,
-            reg_token: regToken,
+            regToken,
         });
         if (!createdDoctor) {
             throw new ConflictException(
@@ -73,8 +73,8 @@ export class DoctorService {
     }
 
     async removeOne(id: string): Promise<void> {
-        const removedDoctor = await this.doctorModel.findByIdAndDelete(id);
-        if (!removedDoctor) {
+        const removedDoctor = await this.doctorModel.deleteOne({ id });
+        if (removedDoctor.deletedCount === 0) {
             throw new NotFoundException(`Doctor with that id: ${id} not found`);
         }
     }

@@ -4,7 +4,7 @@ import { IsMongoId, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 export class ConfirmationDto {
     @ApiProperty({
         example: '9ca4266c-be45-46dc-8aae-e57ceee8a59f',
-        description: 'Id',
+        description: 'Primary key',
         format: 'uuid',
         type: 'string',
     })
@@ -15,7 +15,7 @@ export class ConfirmationDto {
 
     @ApiProperty({
         example: '9ca4266c-be45-46dc-8aae-e57ceee8a59f',
-        description: 'Id',
+        description: 'Primary key',
         format: 'uuid',
         type: 'string',
     })
@@ -26,7 +26,7 @@ export class ConfirmationDto {
 
     @ApiProperty({
         example: '645b9a596e6a640b2cd325b4',
-        description: 'Id',
+        description: 'Primary key',
         type: 'string',
         format: 'ObjectId',
     })
