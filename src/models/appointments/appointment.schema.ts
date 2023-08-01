@@ -19,13 +19,13 @@ export class Appointment {
         type: SchemaTypes.UUID,
         required: true,
     })
-    readonly user: string;
+    readonly userId: string;
 
     @Prop({
         type: SchemaTypes.UUID,
         required: true,
     })
-    readonly doctor: string;
+    readonly doctorId: string;
 
     @Prop({ type: Boolean, required: true })
     readonly isActive: boolean;

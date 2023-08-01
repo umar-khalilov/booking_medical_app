@@ -23,7 +23,7 @@ export class App {
         this.buildDocumentation();
     }
 
-    static async initialize(): Promise<App> {
+    public static async build(): Promise<App> {
         const app = await NestFactory.create<NestFastifyApplication>(
             AppModule,
             new FastifyAdapter(),
@@ -33,7 +33,7 @@ export class App {
                 abortOnError: false,
             },
         );
-        app.setGlobalPrefix('api');
+        app.setGlobalPrefix('/api');
         app.useGlobalPipes(
             new ValidationPipe({
                 disableErrorMessages: false,
@@ -68,14 +68,14 @@ export class App {
         SwaggerModule.setup('/api/docs', this.application, document);
     }
 
-    listen(): void {
-        this.application
-            .listen(this.serverPort, '0.0.0.0')
-            .then(async () => {
-                this.logger.log(
-                    `Application documentation is available at ${await this.application.getUrl()}/api/docs`,
-                );
-            })
-            .catch(this.logger.error);
+    public async listen(): Promise<void> {
+        try {
+            await this.application.listen(this.serverPort, '0.0.0.0');
+            this.logger.log(
+                `Application documentation is available at ${await this.application.getUrl()}/api/docs`,
+            );
+        } catch (error) {
+            this.logger.error(error);
+        }
     }
 }

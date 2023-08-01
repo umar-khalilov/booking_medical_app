@@ -26,7 +26,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @ApiTags('Users')
 @Controller('/users')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    public constructor(private readonly userService: UserService) {}
 
     @ApiOperation({ summary: 'Create a user' })
     @ApiBadRequestResponse({ description: 'Invalid data' })
@@ -35,14 +35,14 @@ export class UserController {
     })
     @HttpCode(HttpStatus.CREATED)
     @Post('/')
-    async create(@Body() data: CreateUserDto): Promise<UserDto> {
+    public async create(@Body() data: CreateUserDto): Promise<UserDto> {
         return this.userService.createOne(data);
     }
 
     @ApiOperation({ summary: 'Get all users' })
     @ApiNotFoundResponse({ description: 'Not found users in database' })
     @Get('/')
-    async fetchAll(): Promise<UserDto[]> {
+    public async fetchAll(): Promise<UserDto[]> {
         return this.userService.fetchAll();
     }
 
@@ -55,7 +55,7 @@ export class UserController {
     })
     @ApiNotFoundResponse({ description: 'User with that id not found' })
     @Get('/:id')
-    async fetchOne(
+    public async fetchOne(
         @Param('id')
         id: string,
     ): Promise<UserDto> {
@@ -66,7 +66,7 @@ export class UserController {
     @ApiNotFoundResponse({ description: 'User with that id not found' })
     @HttpCode(HttpStatus.ACCEPTED)
     @Patch('/:id')
-    async updateOne(
+    public async updateOne(
         @Param()
         { id }: ParamWithIdDto,
         @Body() data: UpdateUserDto,
@@ -78,7 +78,7 @@ export class UserController {
     @ApiNotFoundResponse({ description: 'User with that id not found' })
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete('/:id')
-    async removeOne(
+    public async removeOne(
         @Param()
         { id }: ParamWithIdDto,
     ): Promise<void> {

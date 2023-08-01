@@ -16,7 +16,7 @@ export class BaseSchema {
     @Prop({ type: String, required: true, unique: true })
     readonly email: string;
 
-    @Prop({ type: String, required: true })
+    @Prop({ type: String, required: true, select: false })
     readonly regToken: string;
 
     @Prop({ type: String, required: false })

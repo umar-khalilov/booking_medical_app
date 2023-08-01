@@ -7,6 +7,12 @@ import { Specializes } from '@/common/enums/specializes.enum';
 
 @Schema({
     versionKey: false,
+    // toJSON: {
+    //     transform: (_, ret) => {
+    //         ret.id = ret._id;
+    //         delete ret._id;
+    //     },
+    // },
 })
 export class Doctor extends BaseSchema {
     @Prop({ type: String, enum: Specializes, required: true })

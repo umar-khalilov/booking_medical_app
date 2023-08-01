@@ -14,12 +14,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
-    constructor(
+    public constructor(
         @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
         private readonly jwtService: JwtService,
     ) {}
 
-    async createOne(data: CreateUserDto): Promise<UserDto> {
+    public async createOne(data: CreateUserDto): Promise<UserDto> {
         const type = RoleTypes.USER;
         const payload = { email: data.email, type };
         const regToken = await this.jwtService.signAsync(payload);
@@ -37,7 +37,7 @@ export class UserService {
         return new UserDto(userInstance);
     }
 
-    async fetchAll(): Promise<Array<UserDto>> {
+    public async fetchAll(): Promise<Array<UserDto>> {
         const users = await this.userModel.find();
         if (!users.length) {
             throw new NotFoundException('No found users in database');
@@ -45,7 +45,7 @@ export class UserService {
         return users.map(user => new UserDto(user));
     }
 
-    async findOne(id: string): Promise<UserDto> {
+    public async findOne(id: string): Promise<UserDto> {
         const user = await this.userModel.findById(id);
 
         if (!user) {
@@ -54,7 +54,7 @@ export class UserService {
         return new UserDto(user);
     }
 
-    async findNativeUser(id: string): Promise<UserDocument> {
+    public async findNativeUser(id: string): Promise<UserDocument> {
         const user = await this.userModel.findById(id);
         if (!user) {
             throw new NotFoundException(`User with that id: ${id} not found`);
@@ -62,7 +62,7 @@ export class UserService {
         return user;
     }
 
-    async updateOne(id: string, data: UpdateUserDto): Promise<UserDto> {
+    public async updateOne(id: string, data: UpdateUserDto): Promise<UserDto> {
         const user = await this.userModel.findByIdAndUpdate(id, data, {
             new: true,
         });
@@ -72,7 +72,7 @@ export class UserService {
         return new UserDto(user);
     }
 
-    async removeOne(id: string): Promise<void> {
+    public async removeOne(id: string): Promise<void> {
         const removedUser = await this.userModel.findByIdAndDelete(id);
         if (!removedUser) {
             throw new NotFoundException(`User with that id: ${id} not found`);

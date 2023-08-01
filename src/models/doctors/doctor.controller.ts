@@ -8,6 +8,7 @@ import {
     Param,
     Patch,
     Post,
+    UseInterceptors,
 } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
@@ -22,11 +23,14 @@ import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { DoctorDto } from './dto/doctor.dto';
 import { ParamWithIdDto } from '../base/param-with-id.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import { Doctor, DoctorDocument } from './doctor.schema';
+import { MongooseClassSerializerInterceptor } from '@/common/interceptors/mongoose-class-serializer.interceptor';
 
 @ApiTags('Doctors')
 @Controller('/doctors')
+@UseInterceptors(MongooseClassSerializerInterceptor(Doctor))
 export class DoctorController {
-    constructor(private readonly doctorService: DoctorService) {}
+    public constructor(private readonly doctorService: DoctorService) {}
 
     @ApiOperation({ summary: 'Create a doctor' })
     @ApiBadRequestResponse({ description: 'Invalid data' })
@@ -35,14 +39,14 @@ export class DoctorController {
     })
     @HttpCode(HttpStatus.CREATED)
     @Post('/')
-    async create(@Body() data: CreateDoctorDto): Promise<DoctorDto> {
+    public async create(@Body() data: CreateDoctorDto): Promise<DoctorDto> {
         return this.doctorService.createOne(data);
     }
 
     @ApiOperation({ summary: 'Get all doctors' })
     @ApiNotFoundResponse({ description: 'Not found doctors in database' })
     @Get('/')
-    async fetchAll(): Promise<DoctorDto[]> {
+    public async fetchAll(): Promise<DoctorDto[]> {
         return this.doctorService.fetchAll();
     }
 
@@ -55,10 +59,10 @@ export class DoctorController {
     })
     @ApiNotFoundResponse({ description: 'Doctor with that id not found' })
     @Get('/:id')
-    async fetchOne(
+    public async fetchOne(
         @Param('id')
         id: string,
-    ): Promise<DoctorDto> {
+    ): Promise<DoctorDocument> {
         return this.doctorService.findOne(id);
     }
 
@@ -66,7 +70,7 @@ export class DoctorController {
     @ApiNotFoundResponse({ description: 'Doctor with that id not found' })
     @HttpCode(HttpStatus.ACCEPTED)
     @Patch('/:id')
-    async updateOne(
+    public async updateOne(
         @Param()
         { id }: ParamWithIdDto,
         @Body() data: UpdateDoctorDto,
@@ -78,7 +82,7 @@ export class DoctorController {
     @ApiNotFoundResponse({ description: 'Doctor with that id not found' })
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete('/:id')
-    async removeOne(
+    public async removeOne(
         @Param()
         { id }: ParamWithIdDto,
     ): Promise<void> {

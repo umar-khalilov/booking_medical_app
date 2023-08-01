@@ -24,7 +24,9 @@ import { RejectionDto } from './dto/rejection.dto';
 @ApiTags('Appointments')
 @Controller('/appointments')
 export class AppointmentController {
-    constructor(private readonly appointmentService: AppointmentService) {}
+    public constructor(
+        private readonly appointmentService: AppointmentService,
+    ) {}
 
     @ApiOperation({ summary: 'Create an appointment' })
     @ApiBadRequestResponse({ description: 'Invalid data' })
@@ -33,14 +35,16 @@ export class AppointmentController {
     })
     @HttpCode(HttpStatus.CREATED)
     @Post('/')
-    async create(@Body() data: CreateAppointmentDto): Promise<AppointmentDto> {
+    public async create(
+        @Body() data: CreateAppointmentDto,
+    ): Promise<AppointmentDto> {
         return this.appointmentService.createOne(data);
     }
 
     @ApiOperation({ summary: 'Get all appointments' })
     @ApiNotFoundResponse({ description: 'Not found appointments in database' })
     @Get('/')
-    async fetchAll(): Promise<AppointmentDto[]> {
+    public async fetchAll(): Promise<AppointmentDto[]> {
         return this.appointmentService.fetchAll();
     }
 
@@ -49,7 +53,7 @@ export class AppointmentController {
         description: 'Doctor, User or Appointment with that id not found',
     })
     @Get('/confirmation')
-    async confirmAppointment(
+    public async confirmAppointment(
         @Query() confirmationDto: ConfirmationDto,
     ): Promise<void> {
         await this.appointmentService.confirmAppointment(confirmationDto);
@@ -60,7 +64,9 @@ export class AppointmentController {
         description: 'Appointment with that id not found',
     })
     @Get('/rejection')
-    async rejectAppointment(@Query() appointment: RejectionDto): Promise<void> {
+    public async rejectAppointment(
+        @Query() appointment: RejectionDto,
+    ): Promise<void> {
         await this.appointmentService.rejectAppointment(appointment);
     }
 
@@ -73,7 +79,7 @@ export class AppointmentController {
     })
     @ApiNotFoundResponse({ description: 'Appointment with that id not found' })
     @Get('/:id')
-    async fetchOne(
+    public async fetchOne(
         @Param('id')
         id: string,
     ): Promise<AppointmentDto> {

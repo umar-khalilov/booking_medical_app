@@ -14,13 +14,13 @@ import { UpdateDoctorDto } from './dto/update-doctor.dto';
 
 @Injectable()
 export class DoctorService {
-    constructor(
+    public constructor(
         @InjectModel(Doctor.name)
         private readonly doctorModel: Model<DoctorDocument>,
         private readonly jwtService: JwtService,
     ) {}
 
-    async createOne(data: CreateDoctorDto): Promise<DoctorDto> {
+    public async createOne(data: CreateDoctorDto): Promise<DoctorDto> {
         const type = RoleTypes.DOCTOR;
         const payload = { email: data.email, type };
         const regToken = await this.jwtService.signAsync(payload);
@@ -38,7 +38,7 @@ export class DoctorService {
         return new DoctorDto(doctorInstance);
     }
 
-    async fetchAll(): Promise<Array<DoctorDto>> {
+    public async fetchAll(): Promise<Array<DoctorDto>> {
         const doctors = await this.doctorModel.find();
         if (!doctors.length) {
             throw new NotFoundException('Not found doctors in database');
@@ -46,12 +46,13 @@ export class DoctorService {
         return doctors.map(doctor => new DoctorDto(doctor));
     }
 
-    async findOne(id: string): Promise<DoctorDto> {
+    public async findOne(id: string): Promise<DoctorDocument> {
         const doctor = await this.doctorModel.findById(id);
         if (!doctor) {
             throw new NotFoundException(`Doctor with that id: ${id} not found`);
         }
-        return new DoctorDto(doctor);
+        // return new DoctorDto(doctor);
+        return doctor;
     }
 
     async findNativeDoctor(id: string): Promise<DoctorDocument> {
@@ -62,7 +63,10 @@ export class DoctorService {
         return doctor;
     }
 
-    async updateOne(id: string, data: UpdateDoctorDto): Promise<DoctorDto> {
+    public async updateOne(
+        id: string,
+        data: UpdateDoctorDto,
+    ): Promise<DoctorDto> {
         const doctor = await this.doctorModel.findByIdAndUpdate(id, data, {
             new: true,
         });
@@ -72,7 +76,7 @@ export class DoctorService {
         return new DoctorDto(doctor);
     }
 
-    async removeOne(id: string): Promise<void> {
+    public async removeOne(id: string): Promise<void> {
         const removedDoctor = await this.doctorModel.deleteOne({ id });
         if (removedDoctor.deletedCount === 0) {
             throw new NotFoundException(`Doctor with that id: ${id} not found`);

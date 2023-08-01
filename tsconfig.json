@@ -1,22 +1,24 @@
 {
   "compilerOptions": {
     "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
+    "lib": ["ESNext"],
     "sourceMap": true,
     "outDir": "./build",
     "baseUrl": "./",
-    "rootDir": "./src/",
-    "incremental": true,
+    "rootDir": "./src",
+    "incremental": false,
     "strict": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
@@ -29,7 +31,8 @@
       "./node_modules/@types"
     ],
     "types": [
-      "node"
+      "node",
+      "jest"
     ]
   },
   "include": [

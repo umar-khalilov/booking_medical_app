@@ -9,13 +9,13 @@ import { DoctorService } from '../doctors/doctor.service';
 import { UserService } from '../users/user.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { AppointmentDto } from './dto/appointment.dto';
-import { IAppointmentLinks } from '@/common/interfaces/appointment-links.interface';
 import { ConfirmationDto } from './dto/confirmation.dto';
 import { RejectionDto } from './dto/rejection.dto';
+import { AppointmentLinks } from '@/common/types/appointment-links.type';
 
 @Injectable()
 export class AppointmentService {
-    constructor(
+    public constructor(
         @InjectModel(Appointment.name)
         private readonly appointmentModel: Model<AppointmentDocument>,
         private readonly config: ConfigService,
@@ -24,7 +24,9 @@ export class AppointmentService {
         private readonly userService: UserService,
     ) {}
 
-    async createOne(data: CreateAppointmentDto): Promise<AppointmentDto> {
+    public async createOne(
+        data: CreateAppointmentDto,
+    ): Promise<AppointmentDto> {
         const [{ id: doctorId, email }, { id: userId }] = await Promise.all([
             this.doctorService.findOne(data.doctorId),
             this.userService.findOne(data.userId),
@@ -47,7 +49,7 @@ export class AppointmentService {
         return appointment;
     }
 
-    async fetchAll(): Promise<Array<AppointmentDto>> {
+    public async fetchAll(): Promise<Array<AppointmentDto>> {
         const appointments = await this.appointmentModel.find();
         if (!appointments.length) {
             throw new NotFoundException('Not found appointments in database');
@@ -55,7 +57,7 @@ export class AppointmentService {
         return appointments.map(appointment => new AppointmentDto(appointment));
     }
 
-    async findOne(id: string): Promise<AppointmentDto> {
+    public async findOne(id: string): Promise<AppointmentDto> {
         const appointment = await this.appointmentModel.findById(id);
         if (!appointment) {
             throw new NotFoundException(
@@ -65,7 +67,7 @@ export class AppointmentService {
         return new AppointmentDto(appointment);
     }
 
-    async removeOne(id: string): Promise<Appointment> {
+    public async removeOne(id: string): Promise<Appointment> {
         const removedAppointment =
             await this.appointmentModel.findByIdAndDelete(id);
         if (!removedAppointment) {
@@ -76,7 +78,9 @@ export class AppointmentService {
         return removedAppointment;
     }
 
-    async findNativeAppointment(id: string): Promise<AppointmentDocument> {
+    public async findNativeAppointment(
+        id: string,
+    ): Promise<AppointmentDocument> {
         const appointment = await this.appointmentModel.findById(id);
         if (!appointment) {
             throw new NotFoundException(
@@ -86,7 +90,7 @@ export class AppointmentService {
         return appointment;
     }
 
-    async confirmAppointment(data: ConfirmationDto): Promise<void> {
+    public async confirmAppointment(data: ConfirmationDto): Promise<void> {
         const { doctorId, userId, appointmentId } = data;
         const [doctor, user, appointment] = await Promise.all([
             this.doctorService.findNativeDoctor(doctorId),
@@ -99,7 +103,9 @@ export class AppointmentService {
         await user.save();
     }
 
-    async rejectAppointment({ appointmentId }: RejectionDto): Promise<void> {
+    public async rejectAppointment({
+        appointmentId,
+    }: RejectionDto): Promise<void> {
         await this.removeOne(appointmentId);
     }
 
@@ -119,7 +125,7 @@ export class AppointmentService {
         doctorId: string,
         userId: string,
         appointmentId: string,
-    ): IAppointmentLinks {
+    ): AppointmentLinks {
         const baseUrl =
             this.config.get<string>('SERVER_URL') ||
             `http://localhost:${this.config.get<number>('SERVER_PORT')}`;

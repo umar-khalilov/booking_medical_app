@@ -1,9 +1,9 @@
 ## Installation
 
-### Node.js 16-20 version
+### Node.js 16-20 version and yarn
 
 ```bash
-$ yarn install
+$ yarn
 ```
 
 ## Running the app

@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createTransport } from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import { IAppointmentLinks } from '../interfaces/appointment-links.interface';
+import { AppointmentLinks } from '../types/appointment-links.type';
 
 @Injectable()
 export class MailService implements OnModuleInit {
@@ -10,7 +10,7 @@ export class MailService implements OnModuleInit {
     private config: ConfigService;
     private transport: Mail;
 
-    async onModuleInit(): Promise<void> {
+    public async onModuleInit(): Promise<void> {
         this.logger = new Logger(MailService.name);
         this.config = new ConfigService();
         this.transport = createTransport({
@@ -27,18 +27,17 @@ export class MailService implements OnModuleInit {
     private async sendEmail(options: Mail.Options): Promise<Mail> {
         return this.transport
             .sendMail(options)
-            .then(message => {
-                this.logger.log('Message was sent successfully');
-                return message;
-            })
             .catch(error => {
                 this.logger.error(error.message);
+            })
+            .finally(() => {
+                this.logger.log('Message was sent successfully');
             });
     }
 
     public async sendAppointmentMail(
         email: string,
-        links: IAppointmentLinks,
+        links: AppointmentLinks,
     ): Promise<void> {
         const message: Mail.Options = {
             from: this.config.get<string>('SMTP_USERNAME'),

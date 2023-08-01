@@ -25,7 +25,7 @@ export class AppointmentDto {
         format: 'uuid',
         type: 'string',
     })
-    public readonly user: string;
+    public readonly userId: string;
 
     @ApiProperty({
         example: '9ca4266c-be45-46dc-8aae-e57ceee8a59f',
@@ -33,19 +33,19 @@ export class AppointmentDto {
         format: 'uuid',
         type: 'string',
     })
-    public readonly doctor: string;
+    public readonly doctorId: string;
 
     @ApiProperty({
         example: true,
-        description: 'Active or not',
+        description: 'Is active or not',
     })
-    public readonly active: boolean;
+    public readonly isActive: boolean;
 
     constructor(schema: Appointment) {
         this.id = schema._id;
         this.date = schema.date;
-        this.user = schema.user;
-        this.doctor = schema.doctor;
-        this.active = schema.isActive;
+        this.userId = schema.userId;
+        this.doctorId = schema.doctorId;
+        this.isActive = schema.isActive;
     }
 }
